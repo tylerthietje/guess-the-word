@@ -18,7 +18,7 @@ const playAgain = document.querySelector(".play-again");
 // variable containing Magnolia which is the starting word for now
 let word = "magnolia";
 // Array that contains all the letters guessed by the player
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
 
@@ -135,6 +135,7 @@ const countGuessesRemaining = function (guess) {
     }
     if (remainingGuesses === 0) {
         message.innerText = `GAME OVER! The word was ${word.toUpperCase()}!`;
+        startOver();
     } else if (remainingGuesses === 1) {
         remainingSpan.innerText = `1 guess`;
     } else remainingSpan.innerText = `${remainingGuesses} guesses`;
@@ -144,5 +145,33 @@ const ifWon = function () {
     if (wordInProgress.innerText === word.toUpperCase()) {
         message.classList.add("win");
         message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;
+        startOver()
     }
 };
+
+const startOver = function () {
+    // hide Guess button
+    guessButton.classList.add("hide");
+    // hide paragraph for remaining guesses
+    remaining.classList.add("hide");
+    // hide ul where guesses display
+    guessedLettersElement.classList.add("hide");
+    // show play again button
+    playAgain.classList.remove("hide");
+};
+
+playAgain.addEventListener("click", function () {
+    //reset original values
+    message.classList.remove("win");
+    remainingGuesses = 8;
+    remainingSpan.innerText = `${remainingGuesses} guesses`
+    guessedLetters = [];
+    guessedLettersElement.innerHTML = "";
+    // Show correct UI elements
+    guessButton.classList.remove("hide");
+    remaining.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
+    playAgain.classList.add("hide");
+    // Grab a new random word
+    getWord();
+});
